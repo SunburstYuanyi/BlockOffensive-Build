@@ -1,4 +1,4 @@
-name: NeoForge Mod CI
+name: Build File
 
 on:
   workflow_dispatch:
@@ -85,7 +85,7 @@ jobs:
           path: |
             build/libs/*.jar
             build/reports/**
-          retention-days: 30
+          retention-days: 7
 
       - name: Build report
         if: always()

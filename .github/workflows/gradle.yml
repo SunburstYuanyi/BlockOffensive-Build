@@ -1,14 +1,8 @@
 name: NeoForge Mod Build
 
 on:
-  push:
-分支: 
-      - main
-      - master
-  pull_request:
-分支: 
-      - main
-      - master
+  push: {}
+  pull_request: {}
 
 jobs:
   build:
@@ -33,4 +27,4 @@ jobs:
         with:
           name: mod-artifact
           path: build/libs/*.jar
-          retention-days: 1
+          retention-days: 30

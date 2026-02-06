@@ -43,9 +43,18 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
+      - name: Determine build type
+        id: build-type
+        run: |
+          if [ -z "${{ github.event.inputs.build-type }}" ]; then
+            echo "build_type=standard" >> $GITHUB_OUTPUT
+          else
+            echo "build_type=${{ github.event.inputs.build-type }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build with Gradle
         run: |
-          case "${{ github.event.inputs.build-type || 'standard' }}" in
+          case "${{ steps.build-type.outputs.build_type }}" in
             "clean")
               ./gradlew clean build --stacktrace --no-daemon
               ;;

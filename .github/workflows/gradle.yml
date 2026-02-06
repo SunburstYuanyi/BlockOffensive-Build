@@ -4,27 +4,37 @@ on:
   push: {}
   pull_request: {}
 
+env:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive  # 如果使用子模块需要这个
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+          cache: 'gradle'
 
       - name: Build with Gradle
-        run: ./gradlew build --no-daemon
+        run: |
+          # 确保gradlew有执行权限
+          if [ ! -f "gradlew" ]; then
+            gradle wrapper --gradle-version 8.5
+          fi
+          chmod +x gradlew
+          ./gradlew build --stacktrace --no-daemon
 
       - name: Upload Artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: mod-artifact
           path: build/libs/*.jar
-          retention-days: 30
+          retention-days: 1

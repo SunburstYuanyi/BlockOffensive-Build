@@ -2,9 +2,13 @@ name: NeoForge Mod Build
 
 on:
   push:
-分支: [ "main", "master" ]
+分支: 
+      - main
+      - master
   pull_request:
-分支: [ "main", "master" ]
+分支: 
+      - main
+      - master
 
 jobs:
   build:
